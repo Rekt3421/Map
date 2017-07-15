@@ -56,6 +56,7 @@ def BFS(target,data,node):
 							y[5]=tmp
 							y[6]=1
 						##	print y[4]
+
 						
 							neighbours.append(y)	
 						
@@ -109,6 +110,11 @@ def BFS(target,data,node):
 ##	print path
 	for each in data:
 		each[6]= 0
+	if(len(path) == 3):
+		if (points[0]==points[1] and points[1]==points[2]):
+			print "failed PATH" ,path 
+			return []
+	
 
 	return path
 
@@ -124,7 +130,7 @@ count = 0
 for each in intersections:
 	if not each[4] == each[5]:
 		
-		res = (BFS(each[5],intersections,each))
+		res = sorted(BFS(each[5],intersections,each))
 		flagany = 1
 
 		if res == None :
@@ -138,13 +144,13 @@ for each in intersections:
 		tmp = each[4]
 		each[4]=each[5]
 		each[5]=tmp
-		res = (BFS(each[5],intersections,each))
+		res = sorted(BFS(each[5],intersections,each))
 		flagany = 1
 		if res == None :
 			a= [] 
 		else : 	
 			a = [i for i, x in enumerate(res) if res.count(x) > 1]
-		if (len (a ) == 0 and res not in plots and len(res)>3 ):
+		if (len (a ) == 0 and res not in plots and len(res)>=3 ):
 			print res
 			count = count +1	
 			plots.append(res)

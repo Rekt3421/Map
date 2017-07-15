@@ -40,7 +40,7 @@ for cell_num = 1:length(cellarray_ways)
     %plot(Ways(cell_num,:,1) , Ways(cell_num,:,2));
   
  manual_ways_toshow=[1:319]
-%% manual_ways_toshow=[63,80,74,97];
+manual_ways_toshow=[7,20,6];
     if (sum(cell_num==manual_ways_toshow)==1)
         
         disp([num2str(cell_num) ,'_']);
