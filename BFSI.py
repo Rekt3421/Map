@@ -11,9 +11,7 @@ def BFS(target,data,node):
 	startnode = node[4]
 	visited = []
 	queue = [node]
-##	if target == 191 or target == 31 :
-##		print " Here 1 "
-	
+
 	done = 0	
 	depth=0
 	currnode = node[4]
@@ -21,10 +19,10 @@ def BFS(target,data,node):
 	curr_X = node[0]
 	curr_y = node[1]
 	turn = 0
-	while not done and depth < 200:
+	while not done and depth < 100:
 		for x in queue:
 			#curr_X = x[0]
-			
+		
 			neighbours = []
 			if (turn == 1 and len(queue)==1 ):
 				queue.pop()
@@ -32,19 +30,25 @@ def BFS(target,data,node):
 				return []
 		##		print queue
 				
-			if x [6] == 1 or turn == 0 and not target == currnode:
+			if x [6] == 1 or (turn == 0):
 				if turn == 0:
 					currnode = x[4]
 				else:
 					currnode = x[5]
 				
 				turn =1
-			
+				if len(queue) == 2 and turn >0:
+					tmp = queue[1]
+					if currnode == tmp[4]:
+						currnode = tmp[5]
+					else :
+						currnode = tmp[4]	
 				for y in data:
 					flag = 1
 					for z in queue:
 						if ((z[4] == y[4] and y[5]==z[5])  or (z[5] == y[4] and y[5]==z[4]) ):
 							flag = 0
+						
 					if (y[4] == currnode or y[5]==currnode) and flag and y[6] == 0 and not done:
 						if y[4]==currnode:
 							y[6]=1
@@ -59,7 +63,7 @@ def BFS(target,data,node):
 
 						
 							neighbours.append(y)	
-						
+					 
 						points = []
 						if y[5] == target and not done :
 							done = 1
@@ -87,7 +91,8 @@ def BFS(target,data,node):
 
 
 				depth = depth +1
-	
+	for each in data:
+		each[6]= 0
 	
 	if done == 0 :
 		return []
@@ -108,8 +113,7 @@ def BFS(target,data,node):
 				points.append((each[0],each[1]))	
 
 ##	print path
-	for each in data:
-		each[6]= 0
+	
 	if(len(path) == 3):
 		if (points[0]==points[1] and points[1]==points[2]):
 			print "failed PATH" ,path 
@@ -127,12 +131,12 @@ intersections = sio.loadmat('intersections.mat')
 intersections = intersections.get('intersections')
 plots = []
 count = 0
+print " here"
 for each in intersections:
 	if not each[4] == each[5]:
-		
 		res = sorted(BFS(each[5],intersections,each))
 		flagany = 1
-
+		
 		if res == None :
 			a= [] 
 		else : 	
@@ -145,6 +149,7 @@ for each in intersections:
 		each[4]=each[5]
 		each[5]=tmp
 		res = sorted(BFS(each[5],intersections,each))
+		print " Next" , count
 		flagany = 1
 		if res == None :
 			a= [] 
@@ -154,5 +159,5 @@ for each in intersections:
 			print res
 			count = count +1	
 			plots.append(res)
-			print "count =", count  		
+					
 			sio.savemat('C:\Users\Safi syed\Desktop\Map Proj\ blocks',mdict={'arr': plots},appendmat=True, format = '5')
